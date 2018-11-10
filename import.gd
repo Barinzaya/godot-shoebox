@@ -125,7 +125,7 @@ func parse_frames(json, out):
 			return source
 		
 		var margin = Rect2(source.position,
-		                   source.size - source.position - region.size)
+		                   source.size - region.size)
 		
 		out.append([id, region, margin])
 	
