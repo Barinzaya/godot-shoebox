@@ -70,12 +70,21 @@ func import(in_path, out_path, options, r_platform_variants, r_gen_files):
 		return error
 	
 	for frame in frames:
-		var atlas = AtlasTexture.new()
+		var atlas = null
+		var atlas_path = out_texture_dir.plus_file(frame[0] + ".atlastex")
+		
+		if ResourceLoader.has(atlas_path):
+			atlas = ResourceLoader.load(atlas_path)
+			if atlas == null or not (atlas is AtlasTexture):
+				atlas = null
+		
+		if atlas == null:
+			atlas = AtlasTexture.new()
+		
 		atlas.atlas = in_texture
 		atlas.region = frame[1]
 		atlas.margin = frame[2]
 		
-		var atlas_path = out_texture_dir.plus_file(frame[0] + ".atlastex")
 		error = ResourceSaver.save(atlas_path, atlas)
 		if error != OK:
 			printerr("Failed to save atlas to <%s>." % atlas_path)
